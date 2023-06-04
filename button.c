@@ -54,11 +54,12 @@ void updateButton(Button *button) {
         button->state = NORMAL;
     }
 
+    //MOVE BUTTON ACTION TO FUNCTION IT IS CALLED IN
     //do button actions here
-    if (button->action) {
-        printf("Button pressed. Audio should play here.\n");
-        PlaySound(button->sound);
-    }
+    // if (button->action) {
+    //     printf("Button pressed. Audio should play here.\n");
+    //     PlaySound(button->sound);
+    // }
 
     button->source.y = button->state * button->frameHeight;
 }

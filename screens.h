@@ -3,8 +3,10 @@
 
 #include <raylib.h>
 
-
 //TODO: Create button file for all buttons creation
+typedef enum { TITLE, SETTINGS, BATTLE }Screen;
+
+extern Screen currentScreen;
 
 //TITLE SCREEN
 void initTitleScreen(void);

@@ -28,20 +28,30 @@ void updateTitleScreen(void) {
     updateButton(startButton);
     updateButton(endButton);
     updateButton(settingsButton);
+
+    if (endButton->action) {
+        printf("End button\n");
+        PlaySound(endButton->sound);
+    }
+
+    if (startButton->action) {
+        printf("Start button\n");
+        PlaySound(startButton->sound);
+    }
+
+    if (settingsButton->action) {
+        printf("The settings are working\n");
+        PlaySound(settingsButton->sound);
+        currentScreen = SETTINGS;
+    }
 }
 
 void drawTitleScreen(void) {
-    BeginDrawing();
-
-    ClearBackground(WHITE);
-
     DrawTexture(title, 0, 0, WHITE);
 
     drawButton(startButton);
     drawButton(endButton);
     drawButton(settingsButton);
-    
-    EndDrawing();
 }
 
 void unloadTitleScreen(void) {
