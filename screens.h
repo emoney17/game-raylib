@@ -3,10 +3,16 @@
 
 #include <raylib.h>
 
-//TODO: Create button file for all buttons creation
-typedef enum { TITLE, SETTINGS, BATTLE }Screen;
+// enum for current screen to switch to
+typedef enum { TITLE, SETTINGS, MENU, BATTLE }Screen;
 
+// current and previous screen enum
 extern Screen currentScreen;
+extern Screen prevScreen;
+// global bg music
+extern Music music;
+// global volume setting for all music on bg
+extern float volume;
 
 //TITLE SCREEN
 void initTitleScreen(void);

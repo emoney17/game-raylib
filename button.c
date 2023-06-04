@@ -74,8 +74,9 @@ void unloadButton(Button *button) {
     UnloadSound(button->sound);
 
     if(button) {
+        printf("BUTTON: [%s] ", button->title);
         free(button);
         button = NULL;
-        printf("Button freed\n");
+        printf("Free success\n");
     }
 }

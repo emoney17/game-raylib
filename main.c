@@ -4,6 +4,9 @@
 #include "screens.h"
 
 Screen currentScreen;
+Screen prevScreen;
+Music music;
+float volume = 1.0;
 static const int screenWidth = 800;
 static const int screenHeight = 450;
 
@@ -12,6 +15,8 @@ int main(void) {
     InitAudioDevice();
 
     initTitleScreen();
+    initSettingsScreen();
+    initMenuScreen();
 
     SetTargetFPS(60);
 
@@ -19,7 +24,8 @@ int main(void) {
     while (!WindowShouldClose()) {
         switch (currentScreen) {
         case TITLE: updateTitleScreen(); break;
-        case SETTINGS: printf("SETTINGS MENU SPAWN NOW\n"); break;
+        case SETTINGS: updateSettingsScreen(); break;
+        case MENU: updateMenuScreen(); break;
         default: break;
         }
 
@@ -28,7 +34,8 @@ int main(void) {
 
         switch (currentScreen) {
         case TITLE: drawTitleScreen(); break;
-        case SETTINGS: printf("DRAW SETTINGS SCREEN\n"); break;
+        case SETTINGS: drawSettingsScreen(); break;
+        case MENU: drawMenuScreen();
         default: break;
         }
 
@@ -36,6 +43,8 @@ int main(void) {
     }
 
     unloadTitleScreen();
+    unloadSettingsScreen();
+    unloadMenuScreen();
 
     CloseWindow();
     CloseAudioDevice();

@@ -1,63 +1,69 @@
 #include <stdio.h>
 #include <raylib.h>
-#include <stdlib.h>
 
 #include "screens.h"
 #include "button.h"
 
-static Texture2D title;
-static Rectangle titleDest;
-static Music music;
+static Texture2D background;
 static Button *startButton;
-static Button *endButton;
+static Button *quitButton;
 static Button *settingsButton;
 
 void initTitleScreen(void) {
-    title = LoadTexture("resources/textures/menubg.png");
+    //initialize music here since its the first screen
+    background = LoadTexture("resources/textures/menubg.png");
     music = LoadMusicStream("resources/audio/music_title.ogg");
-    SetMusicVolume(music, 0.4);
+    SetMusicVolume(music, 1.0);
     PlayMusicStream(music);
 
-    startButton = createButton("Start", "resources/textures/button.png", "resources/audio/fx_button.ogg", 100, 350);
-    endButton = createButton("End", "resources/textures/button.png", "resources/audio/fx_button.ogg", 300, 350);
-    settingsButton = createButton("Settings", "resources/textures/button.png", "resources/audio/fx_button.ogg", 500, 350);
+    startButton = createButton("Start", "resources/textures/button.png", "resources/audio/fx_button.ogg", 147, 350);
+    quitButton = createButton("End", "resources/textures/button.png", "resources/audio/fx_button.ogg", 319, 350);
+    settingsButton = createButton("Settings", "resources/textures/button.png", "resources/audio/fx_button.ogg", 491, 350);
 }
 
 void updateTitleScreen(void) {
     UpdateMusicStream(music);
+
     updateButton(startButton);
-    updateButton(endButton);
+    updateButton(quitButton);
     updateButton(settingsButton);
 
-    if (endButton->action) {
-        printf("End button\n");
-        PlaySound(endButton->sound);
+    if (quitButton->action) {
+        PlaySound(quitButton->sound);
+        printf("Quit game\n");
     }
 
     if (startButton->action) {
-        printf("Start button\n");
         PlaySound(startButton->sound);
+        printf("Start button working\n");
+        prevScreen = currentScreen;
+        currentScreen = MENU;
+        printf("Prev: %d Current: %d\n", prevScreen, currentScreen);
     }
 
     if (settingsButton->action) {
-        printf("The settings are working\n");
         PlaySound(settingsButton->sound);
+        printf("The settings are working\n");
+        prevScreen = currentScreen;
         currentScreen = SETTINGS;
+        printf("Prev: %d Current: %d\n", prevScreen, currentScreen);
     }
 }
 
 void drawTitleScreen(void) {
-    DrawTexture(title, 0, 0, WHITE);
+    DrawTexture(background, 0, 0, WHITE);
 
     drawButton(startButton);
-    drawButton(endButton);
+    drawButton(quitButton);
     drawButton(settingsButton);
 }
 
 void unloadTitleScreen(void) {
-    UnloadTexture(title);
+    UnloadTexture(background);
+    //unload music stream here and not in others
     UnloadMusicStream(music);
+
     unloadButton(startButton);
-    unloadButton(endButton);
+    unloadButton(quitButton);
     unloadButton(settingsButton);
 }
