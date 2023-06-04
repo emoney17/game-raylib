@@ -1,80 +1,53 @@
 #include <stdio.h>
 #include <raylib.h>
+#include <stdlib.h>
 
 #include "screens.h"
+#include "button.h"
 
 static Texture2D title;
 static Rectangle titleDest;
 static Music music;
-static Texture2D button;
-static Sound fx_button;
-
-typedef enum { NORMAL, PRESSED }State;
-
-State buttonState = NORMAL;
-bool buttonAction = false;
+static Button *startButton;
+static Button *endButton;
+static Button *settingsButton;
 
 void initTitleScreen(void) {
     title = LoadTexture("resources/textures/menubg.png");
     music = LoadMusicStream("resources/audio/music_title.ogg");
-    SetMusicVolume(music, 1.0f);
+    SetMusicVolume(music, 0.4);
     PlayMusicStream(music);
 
-    button = LoadTexture("resources/textures/button.png");
-    fx_button = LoadSound("resources/audio/fx_button.ogg");
+    startButton = createButton("Start", "resources/textures/button.png", "resources/audio/fx_button.ogg", 100, 350);
+    endButton = createButton("End", "resources/textures/button.png", "resources/audio/fx_button.ogg", 300, 350);
+    settingsButton = createButton("Settings", "resources/textures/button.png", "resources/audio/fx_button.ogg", 500, 350);
 }
 
 void updateTitleScreen(void) {
-
     UpdateMusicStream(music);
-
-    Vector2 mousePoint = GetMousePosition();
-    Rectangle buttonBounds = { 0, 0, (float)button.width, (float)button.height };
-
-    buttonAction = false;
-
-    //clicking buttons
-    if (CheckCollisionPointRec(mousePoint, buttonBounds)) {
-
-        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
-            buttonState = PRESSED;
-        }
-
-        if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
-            buttonAction = true;
-            buttonState = NORMAL;
-        }
-    }
-    else {
-        buttonState = NORMAL;
-    }
-
-    //do button actions here
-    if (buttonAction) {
-        printf("Button pressed. Audio should play here.\n");
-        PlaySound(fx_button);
-    }
+    updateButton(startButton);
+    updateButton(endButton);
+    updateButton(settingsButton);
 }
 
 void drawTitleScreen(void) {
-
-    int buttonFrameHeight = (float)button.height / 2;
-    Rectangle buttonSource = { 0, 0, (float)button.width, buttonFrameHeight };
-
     BeginDrawing();
+
     ClearBackground(WHITE);
 
     DrawTexture(title, 0, 0, WHITE);
 
-    buttonSource.y = buttonState * buttonFrameHeight;
-    DrawTextureRec(button, buttonSource, (Vector2){0, 0}, WHITE);
-
+    drawButton(startButton);
+    drawButton(endButton);
+    drawButton(settingsButton);
+    
     EndDrawing();
 }
 
 void unloadTitleScreen(void) {
     UnloadTexture(title);
-    UnloadTexture(button);
     UnloadMusicStream(music);
-    UnloadSound(fx_button);
+    unloadButton(startButton);
+    unloadButton(endButton);
+    unloadButton(settingsButton);
 }
