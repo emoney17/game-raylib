@@ -3,6 +3,8 @@
 
 #include <raylib.h>
 
+//TODO: configure the 3 music streams to work on each screen
+
 // enum for current screen to switch to
 typedef enum { TITLE, SETTINGS, MENU, BATTLE }Screen;
 
@@ -10,9 +12,13 @@ typedef enum { TITLE, SETTINGS, MENU, BATTLE }Screen;
 extern Screen currentScreen;
 extern Screen prevScreen;
 // global bg music
-extern Music music;
+extern Music titleMusic;
+extern Music battleMusic;
+extern Music menuMusic;
 // global volume setting for all music on bg
 extern float volume;
+// global for exiting game
+extern bool exitFlag;
 
 //TITLE SCREEN
 void initTitleScreen(void);

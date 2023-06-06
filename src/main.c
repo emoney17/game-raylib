@@ -1,12 +1,15 @@
-#include <stdio.h>
 #include <raylib.h>
 
 #include "screens.h"
 
 Screen currentScreen;
 Screen prevScreen;
-Music music;
+Music titleMusic;
+Music battleMusic;
+Music menuMusic;
 float volume = 1.0;
+bool exitFlag = false;
+
 static const int screenWidth = 800;
 static const int screenHeight = 450;
 
@@ -18,10 +21,12 @@ int main(void) {
     initSettingsScreen();
     initMenuScreen();
 
-    SetTargetFPS(60);
+    // Disable ESC to exit
+    SetExitKey(0);
 
+    SetTargetFPS(60);
     currentScreen = TITLE;
-    while (!WindowShouldClose()) {
+    while (!WindowShouldClose() && !exitFlag) {
         switch (currentScreen) {
         case TITLE: updateTitleScreen(); break;
         case SETTINGS: updateSettingsScreen(); break;

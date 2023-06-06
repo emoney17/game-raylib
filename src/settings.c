@@ -1,52 +1,57 @@
-#include <stdio.h>
-#include <raylib.h>
-
 #include "screens.h"
 #include "button.h"
 
 static Texture2D background;
 static Button *volumeUpButton;
 static Button *volumeDownButton;
+static Button *backButton;
 static Button *quitButton;
+
+static const char* buttonTexturePath = "resources/textures/button.png";
+static const char* buttonSoundPath = "resources/audio/sound_button.ogg";
 
 void initSettingsScreen() {
     background = LoadTexture("resources/textures/menubg.png");
     //only need to init music once in title
-    // music = LoadMusicStream("resources/audio/music_battle.ogg");
-    // SetMusicVolume(music, volume);
-    // PlayMusicStream(music);
 
-    volumeUpButton = createButton("Up", "resources/textures/button.png", "resources/audio/fx_button.ogg", 100, 100);
-    volumeDownButton = createButton("Down", "resources/textures/button.png", "resources/audio/fx_button.ogg", 300, 100);
-    quitButton = createButton("Save & Quit", "resources/textures/button.png", "resources/audio/fx_button.ogg", 100, 350);
+    volumeUpButton = createButton("Up", buttonTexturePath, buttonSoundPath, 100, 100);
+    volumeDownButton = createButton("Down", buttonTexturePath, buttonSoundPath, 300, 100);
+    backButton = createButton("Back", buttonTexturePath, buttonSoundPath, 100, 350);
+    quitButton = createButton("Quit", buttonTexturePath, buttonSoundPath, 100, 400);
 }
 
 void updateSettingsScreen() {
-    UpdateMusicStream(music); 
+    SetMusicVolume(titleMusic, volume);
+    UpdateMusicStream(titleMusic); 
 
     updateButton(volumeUpButton);
     updateButton(volumeDownButton);
+    updateButton(backButton);
     updateButton(quitButton);
 
     if (volumeUpButton->action) {
         volume += 0.1;
         printf("Increasing volume %f\n", volume);
-        SetMusicVolume(music, volume);
         PlaySound(volumeUpButton->sound);
     }
 
     if (volumeDownButton->action) {
         volume -= 0.1;
         printf("Decreasing volume %f\n", volume);
-        SetMusicVolume(music, volume);
         PlaySound(volumeDownButton->sound);
+    }
+
+    if (backButton->action) {
+        PlaySound(backButton->sound);
+        printf("Quitting back previous screen\n");
+        currentScreen = prevScreen;
+        printf("Prev: %d Current: %d\n", prevScreen, currentScreen);
     }
 
     if (quitButton->action) {
         PlaySound(quitButton->sound);
-        printf("Quitting back previous screen\n");
-        currentScreen = prevScreen;
-        printf("Prev: %d Current: %d\n", prevScreen, currentScreen);
+        printf("Quitting game\n");
+        exitFlag = true;
     }
 }
 
@@ -55,14 +60,15 @@ void drawSettingsScreen() {
 
     drawButton(volumeUpButton);
     drawButton(volumeDownButton);
+    drawButton(backButton);
     drawButton(quitButton);
 }
 
 void unloadSettingsScreen() {
     UnloadTexture(background);
-    // UnloadMusicStream(music); // only need to unload once
 
     unloadButton(volumeUpButton);
     unloadButton(volumeDownButton);
+    unloadButton(backButton);
     unloadButton(quitButton);
 }

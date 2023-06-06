@@ -1,28 +1,32 @@
-#include <stdio.h>
-#include <raylib.h>
-
 #include "screens.h"
 #include "button.h"
+#include <raylib.h>
 
 static Texture2D background;
 static Button *startButton;
 static Button *quitButton;
 static Button *settingsButton;
 
+static const char* buttonTexturePath = "resources/textures/button.png";
+static const char* buttonSoundPath = "resources/audio/sound_button.ogg";
+
 void initTitleScreen(void) {
     //initialize music here since its the first screen
     background = LoadTexture("resources/textures/menubg.png");
-    music = LoadMusicStream("resources/audio/music_title.ogg");
-    SetMusicVolume(music, 1.0);
-    PlayMusicStream(music);
+    titleMusic = LoadMusicStream("resources/audio/music_title.ogg");
 
-    startButton = createButton("Start", "resources/textures/button.png", "resources/audio/fx_button.ogg", 147, 350);
-    quitButton = createButton("End", "resources/textures/button.png", "resources/audio/fx_button.ogg", 319, 350);
-    settingsButton = createButton("Settings", "resources/textures/button.png", "resources/audio/fx_button.ogg", 491, 350);
+    startButton = createButton("Start", buttonTexturePath, buttonSoundPath, 147, 350);
+    quitButton = createButton("Quit", buttonTexturePath, buttonSoundPath, 319, 350);
+    settingsButton = createButton("Settings", buttonTexturePath, buttonSoundPath, 491, 350);
 }
 
 void updateTitleScreen(void) {
-    UpdateMusicStream(music);
+    if (!IsMusicStreamPlaying(titleMusic)) {
+        PlayMusicStream(titleMusic);
+    }
+
+    SetMusicVolume(titleMusic, volume);
+    UpdateMusicStream(titleMusic);
 
     updateButton(startButton);
     updateButton(quitButton);
@@ -30,7 +34,8 @@ void updateTitleScreen(void) {
 
     if (quitButton->action) {
         PlaySound(quitButton->sound);
-        printf("Quit game\n");
+        printf("Quiting game\n");
+        exitFlag = true; 
     }
 
     if (startButton->action) {
@@ -61,7 +66,7 @@ void drawTitleScreen(void) {
 void unloadTitleScreen(void) {
     UnloadTexture(background);
     //unload music stream here and not in others
-    UnloadMusicStream(music);
+    UnloadMusicStream(titleMusic);
 
     unloadButton(startButton);
     unloadButton(quitButton);

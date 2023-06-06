@@ -1,7 +1,5 @@
 #include "button.h"
 
-//TODO: Finish button init function, there create all necessary variables for function use
-
 Vector2 mousePoint = {0, 0};
 
 Button *createButton(const char* title, const char* texturePath, const char *soundPath, float x, float y) {

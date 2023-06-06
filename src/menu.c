@@ -1,8 +1,6 @@
-#include <stdio.h>
-#include <raylib.h>
-
 #include "screens.h"
 #include "button.h"
+#include <raylib.h>
 
 static Texture2D background;
 static Button *forageButton;
@@ -10,28 +8,41 @@ static Button *exploreButton;
 static Button *travelButton;
 static Button *statsButton;
 static Button *settingsButton;
-static Button *quitButton;
+static Button *backButton;
+
+static const char* buttonTexturePath = "resources/textures/button.png";
+static const char* buttonSoundPath = "resources/audio/sound_button.ogg";
 
 void initMenuScreen() {
     background = LoadTexture("resources/textures/menubg.png"); 
+    battleMusic = LoadMusicStream("resources/audio/music_battle.ogg");
 
-    forageButton = createButton("Forage", "resources/textures/button.png", "resources/audio/fx_button.ogg", 20, 100);
-    exploreButton = createButton("Explore", "resources/textures/button.png", "resources/audio/fx_button.ogg", 220, 100);
-    travelButton = createButton("Travel", "resources/textures/button.png", "resources/audio/fx_button.ogg", 420, 100);
-    statsButton = createButton("View Stats", "resources/textures/button.png", "resources/audio/fx_button.ogg", 620, 100);
-    settingsButton = createButton("Settings", "resources/textures/button.png", "resources/audio/fx_button.ogg", 20, 350);
-    quitButton = createButton("Quit", "resources/textures/button.png", "resources/audio/fx_button.ogg", 620, 350);
+    forageButton = createButton("Forage", buttonTexturePath, buttonSoundPath, 20, 100);
+    exploreButton = createButton("Explore", buttonTexturePath, buttonSoundPath, 220, 100);
+    travelButton = createButton("Travel", buttonTexturePath, buttonSoundPath, 420, 100);
+    statsButton = createButton("View Stats", buttonTexturePath, buttonSoundPath, 620, 100);
+    settingsButton = createButton("Settings", buttonTexturePath, buttonSoundPath, 20, 350);
+    backButton = createButton("Back", buttonTexturePath, buttonSoundPath, 620, 350);
 }
 
 void updateMenuScreen() {
-    UpdateMusicStream(music);
+    if (IsMusicStreamPlaying(titleMusic)) {
+        StopMusicStream(titleMusic);
+    }
+
+    if (!IsMusicStreamPlaying(battleMusic)) {
+        PlayMusicStream(battleMusic);
+    }
+
+    SetMusicVolume(battleMusic, volume);
+    UpdateMusicStream(battleMusic);
 
     updateButton(forageButton);
     updateButton(exploreButton);
     updateButton(travelButton);
     updateButton(statsButton);
     updateButton(settingsButton);
-    updateButton(quitButton);
+    updateButton(backButton);
 
     if (forageButton->action) {
         PlaySound(forageButton->sound);
@@ -61,8 +72,8 @@ void updateMenuScreen() {
         printf("Prev: %d Current: %d\n", prevScreen, currentScreen);
     }
 
-    if (quitButton->action) {
-        PlaySound(quitButton->sound);
+    if (backButton->action) {
+        PlaySound(backButton->sound);
         printf("Quit game to title screen\n");
         prevScreen = currentScreen;
         currentScreen = TITLE;
@@ -78,7 +89,7 @@ void drawMenuScreen() {
     drawButton(travelButton);
     drawButton(statsButton);
     drawButton(settingsButton);
-    drawButton(quitButton);
+    drawButton(backButton);
 }
 
 void unloadMenuScreen() {
@@ -89,5 +100,5 @@ void unloadMenuScreen() {
     unloadButton(travelButton);
     unloadButton(statsButton);
     unloadButton(settingsButton);
-    unloadButton(quitButton);
+    unloadButton(backButton);
 }
