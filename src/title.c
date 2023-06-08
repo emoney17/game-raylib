@@ -1,6 +1,7 @@
+#include <raylib.h>
+
 #include "screens.h"
 #include "button.h"
-#include <raylib.h>
 
 static Texture2D background;
 static Button *startButton;
@@ -21,6 +22,13 @@ void initTitleScreen(void) {
 }
 
 void updateTitleScreen(void) {
+    if (IsMusicStreamPlaying(menuMusic)) {
+        StopMusicStream(menuMusic);
+    }
+    else if (IsMusicStreamPlaying(battleMusic)) {
+        StopMusicStream(battleMusic);
+    }
+
     if (!IsMusicStreamPlaying(titleMusic)) {
         PlayMusicStream(titleMusic);
     }
@@ -43,7 +51,7 @@ void updateTitleScreen(void) {
         printf("Start button working\n");
         prevScreen = currentScreen;
         currentScreen = MENU;
-        printf("Prev: %d Current: %d\n", prevScreen, currentScreen);
+        printf("Prev: %s Current: %s\n", screenAsString(prevScreen), screenAsString(currentScreen));
     }
 
     if (settingsButton->action) {
@@ -51,7 +59,7 @@ void updateTitleScreen(void) {
         printf("The settings are working\n");
         prevScreen = currentScreen;
         currentScreen = SETTINGS;
-        printf("Prev: %d Current: %d\n", prevScreen, currentScreen);
+        printf("Prev: %s Current: %s\n", screenAsString(prevScreen), screenAsString(currentScreen));
     }
 }
 

@@ -1,3 +1,5 @@
+#include <raylib.h>
+
 #include "screens.h"
 #include "button.h"
 
@@ -12,7 +14,6 @@ static const char* buttonSoundPath = "resources/audio/sound_button.ogg";
 
 void initSettingsScreen() {
     background = LoadTexture("resources/textures/menubg.png");
-    //only need to init music once in title
 
     volumeUpButton = createButton("Up", buttonTexturePath, buttonSoundPath, 100, 100);
     volumeDownButton = createButton("Down", buttonTexturePath, buttonSoundPath, 300, 100);
@@ -21,8 +22,18 @@ void initSettingsScreen() {
 }
 
 void updateSettingsScreen() {
-    SetMusicVolume(titleMusic, volume);
-    UpdateMusicStream(titleMusic); 
+    if (IsMusicStreamPlaying(titleMusic)) {
+        SetMusicVolume(titleMusic, volume);
+        UpdateMusicStream(titleMusic); 
+    }
+    else if (IsMusicStreamPlaying(battleMusic)) {
+        SetMusicVolume(battleMusic, volume);
+        UpdateMusicStream(battleMusic);
+    }
+    else if (IsMusicStreamPlaying(menuMusic)) {
+        SetMusicVolume(menuMusic, volume);
+        UpdateMusicStream(menuMusic);
+    }
 
     updateButton(volumeUpButton);
     updateButton(volumeDownButton);
@@ -45,7 +56,7 @@ void updateSettingsScreen() {
         PlaySound(backButton->sound);
         printf("Quitting back previous screen\n");
         currentScreen = prevScreen;
-        printf("Prev: %d Current: %d\n", prevScreen, currentScreen);
+        printf("Prev: SETTINGS Current: %s\n", screenAsString(currentScreen));
     }
 
     if (quitButton->action) {

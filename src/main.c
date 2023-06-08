@@ -33,17 +33,17 @@ int main(void) {
         case MENU: updateMenuScreen(); break;
         default: break;
         }
-
+        
         BeginDrawing();
         ClearBackground(WHITE);
-
+        
         switch (currentScreen) {
         case TITLE: drawTitleScreen(); break;
         case SETTINGS: drawSettingsScreen(); break;
         case MENU: drawMenuScreen();
         default: break;
         }
-
+        
         EndDrawing();
     }
 

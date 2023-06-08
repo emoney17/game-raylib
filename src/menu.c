@@ -1,6 +1,7 @@
+#include <raylib.h>
+
 #include "screens.h"
 #include "button.h"
-#include <raylib.h>
 
 static Texture2D background;
 static Button *forageButton;
@@ -15,7 +16,7 @@ static const char* buttonSoundPath = "resources/audio/sound_button.ogg";
 
 void initMenuScreen() {
     background = LoadTexture("resources/textures/menubg.png"); 
-    battleMusic = LoadMusicStream("resources/audio/music_battle.ogg");
+    menuMusic = LoadMusicStream("resources/audio/music_menu.ogg");
 
     forageButton = createButton("Forage", buttonTexturePath, buttonSoundPath, 20, 100);
     exploreButton = createButton("Explore", buttonTexturePath, buttonSoundPath, 220, 100);
@@ -26,16 +27,19 @@ void initMenuScreen() {
 }
 
 void updateMenuScreen() {
-    if (IsMusicStreamPlaying(titleMusic)) {
+    if (IsMusicStreamPlaying(battleMusic)) {
+        StopMusicStream(battleMusic);
+    }
+    else if (IsMusicStreamPlaying(titleMusic)) {
         StopMusicStream(titleMusic);
     }
 
-    if (!IsMusicStreamPlaying(battleMusic)) {
-        PlayMusicStream(battleMusic);
+    if (!IsMusicStreamPlaying(menuMusic)) {
+        PlayMusicStream(menuMusic);
     }
 
-    SetMusicVolume(battleMusic, volume);
-    UpdateMusicStream(battleMusic);
+    SetMusicVolume(menuMusic, volume);
+    UpdateMusicStream(menuMusic);
 
     updateButton(forageButton);
     updateButton(exploreButton);
@@ -69,7 +73,7 @@ void updateMenuScreen() {
         printf("The settings are working\n");
         prevScreen = currentScreen;
         currentScreen = SETTINGS;
-        printf("Prev: %d Current: %d\n", prevScreen, currentScreen);
+        printf("Prev: %s Current: %s\n", screenAsString(prevScreen), screenAsString(currentScreen));
     }
 
     if (backButton->action) {
@@ -77,7 +81,7 @@ void updateMenuScreen() {
         printf("Quit game to title screen\n");
         prevScreen = currentScreen;
         currentScreen = TITLE;
-        printf("Prev: %d Current: %d\n", prevScreen, currentScreen);
+        printf("Prev: %s Current: %s\n", screenAsString(prevScreen), screenAsString(currentScreen));
     }
 }
 

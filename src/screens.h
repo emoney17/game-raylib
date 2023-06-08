@@ -5,7 +5,6 @@
 
 //TODO: configure the 3 music streams to work on each screen
 
-// enum for current screen to switch to
 typedef enum { TITLE, SETTINGS, MENU, BATTLE }Screen;
 
 // current and previous screen enum
@@ -19,6 +18,12 @@ extern Music menuMusic;
 extern float volume;
 // global for exiting game
 extern bool exitFlag;
+
+// enum as string for logs
+static const char* screenAsString(Screen s) {
+    static const char* strings[] = { "TITLE", "SETTINGS", "MENU", "BATTLE" };
+    return strings[s];
+}
 
 //TITLE SCREEN
 void initTitleScreen(void);
