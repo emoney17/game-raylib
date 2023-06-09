@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <raylib.h>
 
-typedef enum { NORMAL, PRESSED }State;
+typedef enum { DEFAULT, PRESSED }State;
 
 typedef struct {
     const char* title;

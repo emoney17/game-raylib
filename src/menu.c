@@ -1,7 +1,9 @@
 #include <raylib.h>
+#include <stdio.h>
 
 #include "screens.h"
 #include "button.h"
+#include "player.h"
 
 static Texture2D background;
 static Button *forageButton;
@@ -66,6 +68,7 @@ void updateMenuScreen() {
     if (statsButton->action) {
         PlaySound(statsButton->sound);
         printf("View stats function\n");
+        printStats();
     }
 
     if (settingsButton->action) {
@@ -94,6 +97,8 @@ void drawMenuScreen() {
     drawButton(statsButton);
     drawButton(settingsButton);
     drawButton(backButton);
+
+    drawPlayer();
 }
 
 void unloadMenuScreen() {
@@ -105,4 +110,6 @@ void unloadMenuScreen() {
     unloadButton(statsButton);
     unloadButton(settingsButton);
     unloadButton(backButton);
+
+    unloadPlayer();
 }

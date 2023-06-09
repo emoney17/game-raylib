@@ -45,11 +45,11 @@ void updateButton(Button *button) {
 
         if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
             button->action = true;
-            button->state = NORMAL;
+            button->state = DEFAULT;
         }
     }
     else {
-        button->state = NORMAL;
+        button->state = DEFAULT;
     }
 
     //MOVE BUTTON ACTION TO FUNCTION IT IS CALLED IN
@@ -71,7 +71,7 @@ void unloadButton(Button *button) {
     UnloadTexture(button->texture); 
     UnloadSound(button->sound);
 
-    if(button) {
+    if(button != NULL) {
         printf("BUTTON: [%s] ", button->title);
         free(button);
         button = NULL;

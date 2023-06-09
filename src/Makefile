@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS= -Wall -Wextra
-SRC = src/main.c src/title.c src/menu.c src/button.c src/settings.c
+SRC = main.c title.c menu.c button.c settings.c player.c
 LIBS = -lraylib -lm
 
 all:

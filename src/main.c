@@ -1,7 +1,9 @@
 #include <raylib.h>
 
+#include "player.h"
 #include "screens.h"
 
+Player player;
 Screen currentScreen;
 Screen prevScreen;
 Music titleMusic;
@@ -17,6 +19,7 @@ int main(void) {
     InitWindow(screenWidth, screenHeight, "Pokemon Game");
     InitAudioDevice();
 
+    initPlayer();
     initTitleScreen();
     initSettingsScreen();
     initMenuScreen();
