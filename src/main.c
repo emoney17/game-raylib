@@ -1,9 +1,11 @@
 #include <raylib.h>
 
-#include "player.h"
 #include "screens.h"
+#include "player.h"
+#include "enemy.h"
 
 Player player;
+Enemy enemy;
 Screen currentScreen;
 Screen prevScreen;
 Music titleMusic;
@@ -20,6 +22,7 @@ int main(void) {
     InitAudioDevice();
 
     initPlayer();
+    initEnemy();
     initTitleScreen();
     initSettingsScreen();
     initMenuScreen();

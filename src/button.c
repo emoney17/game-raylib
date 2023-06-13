@@ -1,4 +1,6 @@
 #include "button.h"
+#include "screens.h"
+#include <raylib.h>
 
 Vector2 mousePoint = {0, 0};
 
@@ -33,6 +35,7 @@ Button *createButton(const char* title, const char* texturePath, const char *sou
 }
 
 void updateButton(Button *button) {
+    SetSoundVolume(button->sound, volume);
     mousePoint = GetMousePosition();
     button->action = false;
 
