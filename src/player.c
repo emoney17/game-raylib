@@ -1,8 +1,9 @@
 #include "player.h"
+#include <raylib.h>
 
 void initPlayer(void) {
-    player.cast = LoadSound("resources/audio/cast.ogg");
-    player.attack = LoadSound("resources/audio/attack.ogg");
+    player.cast = LoadSound("resources/audio/sound_spell.ogg");
+    player.attack = LoadSound("resources/audio/sound_attack.ogg");
     player.hp = 80;
     player.healthPots = 1;
     player.actionsPots = 1;

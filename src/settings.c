@@ -42,26 +42,26 @@ void updateSettingsScreen() {
 
     if (volumeUpButton->action) {
         volume += 0.1;
-        printf("Increasing volume %f\n", volume);
+        printf("NOTICE: Increasing volume %f\n", volume);
         PlaySound(volumeUpButton->sound);
     }
 
     if (volumeDownButton->action) {
         volume -= 0.1;
-        printf("Decreasing volume %f\n", volume);
+        printf("NOTICE: Decreasing volume %f\n", volume);
         PlaySound(volumeDownButton->sound);
     }
 
     if (backButton->action) {
         PlaySound(backButton->sound);
-        printf("Quitting back previous screen\n");
+        printf("NOTICE: Quitting back previous screen\n");
         currentScreen = prevScreen;
-        printf("Prev: SETTINGS Current: %s\n", screenAsString(currentScreen));
+        printf("NOTICE: Prev: SETTINGS Current: %s\n", screenAsString(currentScreen));
     }
 
     if (quitButton->action) {
         PlaySound(quitButton->sound);
-        printf("Quitting game\n");
+        printf("NOTICE: Quitting game\n");
         exitFlag = true;
     }
 }

@@ -16,10 +16,6 @@ static Button *backButton;
 static Button *itemsButton;
 static Button *settingsButton;
 static Sound failedPress;
-static Sound attackSound;
-static Sound blockSound;
-static Sound healSound;
-static Sound itemsSound;
 
 static const char* buttonTexturePath = "resources/textures/button.png";
 static const char* buttonSoundPath = "resources/audio/sound_button.ogg";
@@ -27,6 +23,7 @@ static const char* buttonSoundPath = "resources/audio/sound_button.ogg";
 static int r; // Random number for enemies
 
 // TODO: Make heal and action restore on same button and open up a new screen
+// TODO: Make inventory screen when openint inventory
 void initMenuScreen() {
     srand(time(NULL));
 
@@ -69,64 +66,66 @@ void updateMenuScreen() {
     updateButton(settingsButton);
 
     SetSoundVolume(failedPress, volume);
-    SetSoundVolume(attackSound, volume);
-    SetSoundVolume(blockSound, volume);
-    SetSoundVolume(healSound, volume);
-    SetSoundVolume(itemsSound, volume);
 
+    if (player.action <= 0) {
+        printf("NOTICE: You are out of actions, it is now the enemy turn\n");
+        player.turn = false;
+        player.action = 3;
+    }
+    
     if (player.turn) {
         if (attackButton->action) {
             PlaySound(attackButton->sound);
             enemy.hp -= 5;
             player.action -= 1;
-            printf("5 damaged dealt to enemy\n");
-            // player.turn = false;
+            printf("PLAYER: 5 damaged dealt to enemy\n");
         }
         
         if (blockButton->action) {
             PlaySound(blockButton->sound);
-            printf("Blocking\n");
-            // player.turn = false;
+            printf("PLAYER: Blocking\n");
+            player.action -=1;
         }
         
         if (healthPotButton->action) {
             if (player.hp == 100) {
                 PlaySound(failedPress);
-                printf("Hp is allready full, a pot will not be used\n");
+                printf("WARNING: Hp is allready full, a pot will not be used\n");
             }
             else {
                 PlaySound(healthPotButton->sound);
-                printf("Using health pot, HP was %d now %d\n", player.hp, player.hp + 10);
+                printf("PLAYER: Using health pot, HP was %d now %d\n", player.hp, player.hp + 10);
                 player.hp += 10;
                 player.healthPots -= 1;
-                // player.turn = false;
+                player.action -=1;
             }
         }
         
         if (itemsButton->action) {
             PlaySound(itemsButton->sound);
-            printf("Opening items screen\n");
+            printf("PLAYER: Items screen\n");
         }
+
     }
     else {
         if (attackButton->action) {
             PlaySound(failedPress);
-            printf("It is not the players turn\n");
+            printf("WARNING: It is not the players turn\n");
         }
         
         if (blockButton->action) {
             PlaySound(failedPress);
-            printf("It is not the players turn\n");
+            printf("WARNING: It is not the players turn\n");
         }
         
         if (healthPotButton->action) {
             PlaySound(failedPress);
-            printf("It is not the players turn\n");
+            printf("WARNING: It is not the players turn\n");
         }
         
         if (itemsButton->action) {
             PlaySound(failedPress);
-            printf("It is not the players turn\n");
+            printf("WARNING: It is not the players turn\n");
         }
     }
 
@@ -134,17 +133,23 @@ void updateMenuScreen() {
         PlaySound(backButton->sound);
         prevScreen = currentScreen;
         currentScreen = TITLE;
+
+        unloadPlayer();
+        unloadEnemy();
+
         initPlayer();
-        printf("Player data wiped\n");
-        printf("Prev: %s Current: %s\n", screenAsString(prevScreen), screenAsString(currentScreen));
+        initEnemy();
+
+        printf("NOTICE: Player data wiped\n");
+        printf("NOTICE: Prev: %s Current: %s\n", screenAsString(prevScreen), screenAsString(currentScreen));
     }
     
     if (settingsButton->action) {
         PlaySound(settingsButton->sound);
-        printf("Settings button\n");
+        printf("NOTICE: Settings button\n");
         prevScreen = currentScreen;
         currentScreen = SETTINGS;
-        printf("Prev: %s Current: %s\n", screenAsString(prevScreen), screenAsString(currentScreen));
+        printf("NOTICE: Prev: %s Current: %s\n", screenAsString(prevScreen), screenAsString(currentScreen));
     }
 }
 

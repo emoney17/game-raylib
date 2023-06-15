@@ -7,6 +7,12 @@
 
 typedef enum { TITLE, SETTINGS, MENU, BATTLE }Screen;
 
+typedef struct {
+    const char* health;
+    const char* actions;
+    const char* warnings;
+}Status;
+
 // current and previous screen enum
 extern Screen currentScreen;
 extern Screen prevScreen;

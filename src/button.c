@@ -1,6 +1,5 @@
 #include "button.h"
 #include "screens.h"
-#include <raylib.h>
 
 Vector2 mousePoint = {0, 0};
 
@@ -75,9 +74,12 @@ void unloadButton(Button *button) {
     UnloadSound(button->sound);
 
     if(button != NULL) {
-        printf("BUTTON: [%s] ", button->title);
+        printf("BUTTON: %s ", button->title);
         free(button);
         button = NULL;
-        printf("Free success\n");
+        printf("freed\n");
+    }
+    else {
+        printf("ERROR: Could not free button %s\n", button->title);
     }
 }

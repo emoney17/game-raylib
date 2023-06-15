@@ -8,6 +8,7 @@ typedef struct {
     Sound attack;
     Sound defeat;
     int hp;
+    int damage;
     bool turn;
 }Enemy;
 
@@ -15,7 +16,7 @@ extern Enemy enemy;
 
 static Enemy *enemies;
 
-Enemy *createEnemy(const char* name, int hp, const char* texturePath, const char* attackSoundPath, const char* defeatSoundPath);
+Enemy *createEnemy(const char* name, int hp, int damage, const char* texturePath, const char* attackSoundPath, const char* defeatSoundPath);
 void initEnemy(void);
 void updateEnemy(void);
 void drawEnemy(void);

@@ -42,24 +42,24 @@ void updateTitleScreen(void) {
 
     if (quitButton->action) {
         PlaySound(quitButton->sound);
-        printf("Quiting game\n");
+        printf("NOTICE: Quiting game\n");
         exitFlag = true; 
     }
 
     if (startButton->action) {
         PlaySound(startButton->sound);
-        printf("Start button working\n");
+        printf("NOTICE: Start button working\n");
         prevScreen = currentScreen;
         currentScreen = MENU;
-        printf("Prev: %s Current: %s\n", screenAsString(prevScreen), screenAsString(currentScreen));
+        printf("NOTICE: Prev: %s Current: %s\n", screenAsString(prevScreen), screenAsString(currentScreen));
     }
 
     if (settingsButton->action) {
         PlaySound(settingsButton->sound);
-        printf("The settings are working\n");
+        printf("NOTICE: The settings are working\n");
         prevScreen = currentScreen;
         currentScreen = SETTINGS;
-        printf("Prev: %s Current: %s\n", screenAsString(prevScreen), screenAsString(currentScreen));
+        printf("NOTICE: Prev: %s Current: %s\n", screenAsString(prevScreen), screenAsString(currentScreen));
     }
 }
 
