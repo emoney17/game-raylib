@@ -14,4 +14,5 @@ typedef struct {
 extern Player player;
 
 void initPlayer(void);
+void updatePlayer(void);
 void unloadPlayer(void);

@@ -16,6 +16,8 @@ typedef struct {
 // current and previous screen enum
 extern Screen currentScreen;
 extern Screen prevScreen;
+extern int screenWidth;
+extern int screenHeight;
 // global bg music
 extern Music titleMusic;
 extern Music battleMusic;

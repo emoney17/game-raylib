@@ -4,11 +4,12 @@
 
 typedef struct {
     Texture2D texture;
-    const char* name;
+    const char *name;
     Sound attack;
     Sound defeat;
     int hp;
     int damage;
+    float posX, posY;
     bool turn;
 }Enemy;
 

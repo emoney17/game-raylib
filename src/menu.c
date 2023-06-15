@@ -36,7 +36,6 @@ void initMenuScreen() {
     blockButton = createButton("Block", buttonTexturePath, "resources/audio/sound_block.ogg", 220, 390);
     healthPotButton = createButton("Heal", buttonTexturePath, "resources/audio/sound_spell1.ogg", 420, 390);
     itemsButton = createButton("Items", buttonTexturePath, "resources/audio/sound_inventory.ogg", 620, 390);
-
     backButton = createButton("Back", buttonTexturePath, buttonSoundPath, 20, 20);
     settingsButton = createButton("Settings", buttonTexturePath, buttonSoundPath, 620, 20);
 }
@@ -56,6 +55,7 @@ void updateMenuScreen() {
     SetMusicVolume(menuMusic, volume);
     UpdateMusicStream(menuMusic);
 
+    updatePlayer();
     updateEnemy();
 
     updateButton(attackButton);
@@ -67,12 +67,6 @@ void updateMenuScreen() {
 
     SetSoundVolume(failedPress, volume);
 
-    if (player.action <= 0) {
-        printf("NOTICE: You are out of actions, it is now the enemy turn\n");
-        player.turn = false;
-        player.action = 3;
-    }
-    
     if (player.turn) {
         if (attackButton->action) {
             PlaySound(attackButton->sound);

@@ -11,6 +11,8 @@ Enemy *createEnemy(const char *name, int hp, int damage, const char *texturePath
     enemy->damage = damage;
     enemy->hp = hp;
     enemy->turn = false;
+    enemy->posX = ((float)screenWidth - (float)enemy->texture.width) / 2;
+    enemy->posY = 100.0f;
     return enemy;
 }
 
@@ -42,7 +44,7 @@ void updateEnemy(void) {
 }
 
 void drawEnemy(void) {
-    DrawTexture(enemy.texture, 0, 0, WHITE);
+    DrawTexture(enemy.texture, enemy.posX, enemy.posY, WHITE);
 }
 
 void unloadEnemy(void) {

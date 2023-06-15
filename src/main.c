@@ -13,9 +13,8 @@ Music battleMusic;
 Music menuMusic;
 float volume = 1.0;
 bool exitFlag = false;
-
-static const int screenWidth = 800;
-static const int screenHeight = 450;
+int screenWidth = 800;
+int screenHeight = 450;
 
 int main(void) {
     InitWindow(screenWidth, screenHeight, "Pokemon Game");
