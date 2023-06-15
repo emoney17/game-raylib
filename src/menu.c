@@ -11,7 +11,6 @@ static Texture2D background;
 static Button *attackButton;
 static Button *blockButton;
 static Button *healthPotButton;
-static Button *backButton;
 static Button *itemsButton;
 static Button *settingsButton;
 static Sound failedPress;
@@ -31,7 +30,6 @@ void initMenuScreen() {
     blockButton = createButton("Block", buttonTexturePath, "resources/audio/sound_block.ogg", 220, 390);
     healthPotButton = createButton("Heal", buttonTexturePath, "resources/audio/sound_spell1.ogg", 420, 390);
     itemsButton = createButton("Items", buttonTexturePath, "resources/audio/sound_inventory.ogg", 620, 390);
-    backButton = createButton("Back", buttonTexturePath, buttonSoundPath, 20, 20);
     settingsButton = createButton("Settings", buttonTexturePath, buttonSoundPath, 620, 20);
 }
 
@@ -56,7 +54,6 @@ void updateMenuScreen() {
     updateButton(attackButton);
     updateButton(blockButton);
     updateButton(healthPotButton);
-    updateButton(backButton);
     updateButton(itemsButton);
     updateButton(settingsButton);
 
@@ -70,11 +67,16 @@ void updateMenuScreen() {
             printf("PLAYER: 5 damaged dealt to enemy\n");
         }
         
+        // TODO: Make this the show stats button later
         if (blockButton->action) {
             PlaySound(blockButton->sound);
             printf("PLAYER: Blocking\n");
-            printf("HEALTH: %d\n ACTIONS: %d\n ITEM[0]: %s\n", player.hp, player.action, player.items[0].name);
-            player.action -=1;
+            printf("HEALTH: %d\nACTIONS: %d\n", player.hp, player.action);
+            printf("ITEMS: \n");
+            for (int i = 0; i < player.itemsSize - 1; i++) {
+                printf("%d %s\n", i, player.items[i].name);
+            }
+            // player.action -=1;
         }
         
         if (healthPotButton->action) {
@@ -119,21 +121,6 @@ void updateMenuScreen() {
         }
     }
 
-    if (backButton->action) {
-        PlaySound(backButton->sound);
-        prevScreen = currentScreen;
-        currentScreen = TITLE;
-
-        unloadPlayer();
-        unloadEnemy();
-
-        initPlayer();
-        initEnemy();
-
-        printf("NOTICE: Player data wiped\n");
-        printf("NOTICE: Prev: %s Current: %s\n", screenAsString(prevScreen), screenAsString(currentScreen));
-    }
-    
     if (settingsButton->action) {
         PlaySound(settingsButton->sound);
         printf("NOTICE: Settings button\n");
@@ -151,7 +138,6 @@ void drawMenuScreen() {
     drawButton(attackButton);
     drawButton(blockButton);
     drawButton(healthPotButton);
-    drawButton(backButton);
     drawButton(itemsButton);
     drawButton(settingsButton);
 }
@@ -162,7 +148,6 @@ void unloadMenuScreen() {
     unloadButton(attackButton);
     unloadButton(blockButton);
     unloadButton(healthPotButton);
-    unloadButton(backButton);
     unloadButton(itemsButton);
     unloadButton(settingsButton);
 

@@ -10,6 +10,7 @@ typedef struct {
 }Item;
 
 extern Item *itemCollection;
+extern int itemCollectionSize;
 
 Item *createItem(int damage, int uses, const char *name, const char* soundPath);
 void initItems(void);

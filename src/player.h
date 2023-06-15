@@ -6,6 +6,7 @@
 typedef struct {
     int hp;
     int action;
+    int itemsSize;
     Sound cast;
     Sound attack;
     int healthPots;

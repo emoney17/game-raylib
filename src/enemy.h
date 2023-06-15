@@ -14,6 +14,7 @@ typedef struct {
 }Enemy;
 
 extern Enemy enemy;
+extern int enemiesSize;
 
 static Enemy *enemies;
 

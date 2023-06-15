@@ -8,7 +8,8 @@ void initPlayer(void) {
     player.actionsPots = 1;
     player.action = 3;
     player.turn = true;
-    player.items = malloc(sizeof(Item) * 3);
+    player.itemsSize = 1;
+    player.items = malloc(sizeof(Item) * 1);
 }
 
 void updatePlayer(void) {
