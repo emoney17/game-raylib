@@ -1,5 +1,4 @@
 #include "player.h"
-#include <raylib.h>
 
 void initPlayer(void) {
     player.cast = LoadSound("resources/audio/sound_spell1.ogg");
@@ -9,6 +8,7 @@ void initPlayer(void) {
     player.actionsPots = 1;
     player.action = 3;
     player.turn = true;
+    player.items = malloc(sizeof(Item) * 3);
 }
 
 void updatePlayer(void) {

@@ -1,7 +1,6 @@
 #include <raylib.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 
 #include "screens.h"
 #include "button.h"
@@ -20,13 +19,9 @@ static Sound failedPress;
 static const char* buttonTexturePath = "resources/textures/button.png";
 static const char* buttonSoundPath = "resources/audio/sound_button.ogg";
 
-static int r; // Random number for enemies
-
 // TODO: Make heal and action restore on same button and open up a new screen
 // TODO: Make inventory screen when openint inventory
 void initMenuScreen() {
-    srand(time(NULL));
-
     failedPress = LoadSound("resources/audio/sound_fail.ogg");
 
     background = LoadTexture("resources/textures/menubg.png"); 
@@ -78,6 +73,7 @@ void updateMenuScreen() {
         if (blockButton->action) {
             PlaySound(blockButton->sound);
             printf("PLAYER: Blocking\n");
+            printf("HEALTH: %d\n ACTIONS: %d\n ITEM[0]: %s\n", player.hp, player.action, player.items[0].name);
             player.action -=1;
         }
         
@@ -170,5 +166,6 @@ void unloadMenuScreen() {
     unloadButton(itemsButton);
     unloadButton(settingsButton);
 
+    unloadPlayer();
     unloadEnemy();
 }

@@ -1,4 +1,5 @@
 #include <raylib.h>
+#include <time.h>
 
 #include "screens.h"
 #include "player.h"
@@ -17,11 +18,14 @@ int screenWidth = 800;
 int screenHeight = 450;
 
 int main(void) {
+    srand(time(NULL));
+
     InitWindow(screenWidth, screenHeight, "Pokemon Game");
     InitAudioDevice();
 
     initPlayer();
     initEnemy();
+    initItems();
     initTitleScreen();
     initSettingsScreen();
     initMenuScreen();

@@ -2,6 +2,8 @@
 #include "screens.h"
 #include "player.h"
 
+#include <stdio.h>
+
 Enemy *createEnemy(const char *name, int hp, int damage, const char *texturePath, const char *attackSoundPath, const char* deathSoundPath) {
     Enemy *enemy = malloc(sizeof(Enemy));
     enemy->name = name;
@@ -32,6 +34,9 @@ void updateEnemy(void) {
         PlaySound(enemy.defeat);
         int r = rand() % 5;
         printf("ENEMY: %s was killed, spawned in new enemy %s\n", enemy.name, enemies[r].name);
+        int i = rand() % 3;
+        printf("ENEMY: Dropped an item: %s\n", itemCollection[i].name);
+        player.items[0] = itemCollection[i];
         enemy = enemies[r];
     }
 

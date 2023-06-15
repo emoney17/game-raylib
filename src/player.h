@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <raylib.h>
 
+#include "item.h"
+
 typedef struct {
     int hp;
     int action;
@@ -9,6 +11,7 @@ typedef struct {
     int healthPots;
     int actionsPots;
     bool turn;
+    Item *items;
 }Player;
 
 extern Player player;
