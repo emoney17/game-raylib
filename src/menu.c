@@ -66,13 +66,19 @@ void updateMenuScreen() {
     SetMusicVolume(menuMusic, volume);
     UpdateMusicStream(menuMusic);
 
+    // TODO: int update player, if an item has 0 uses remove it from the array
     updatePlayer();
     updateEnemy();
 
     // update the names of the item buttons based on the items the player has
     for (int i = 0; i < player.itemsSize - 1; i++) {
         if (player.items[i].name != NULL) {
-            itemsScreenButtons[i]->title = player.items[i].name;
+            if (player.items[i].uses == 0) {
+                itemsScreenButtons[i]->title = NULL;
+            }
+            else {
+                itemsScreenButtons[i]->title = player.items[i].name;
+            }
         }
     }
     
@@ -84,10 +90,20 @@ void updateMenuScreen() {
 
         // if there is no item associated to the button play error sound
         for (int i = 0; i < itemScreenNumberOfButtons; i++) {
-            if(itemsScreenButtons[i]->action &&
-                itemsScreenButtons[i]->title == NULL) {
-                PlaySound(failedPress);
-                printf("You do not have an item\n");
+            if(itemsScreenButtons[i]->action) {
+                if (itemsScreenButtons[i]->title == NULL) {
+                    PlaySound(failedPress);
+                    printf("You do not have an item\n");
+                }
+                else {
+                    PlaySound(player.items[i].sound);
+                    printf("using item %s\n", player.items[i].name);
+
+                    // update hp and actions 
+                    enemy.hp -= player.items[i].damage;
+                    player.action -= 1;
+                    player.items[i].uses -= 1;
+                }
             }
         }
 
