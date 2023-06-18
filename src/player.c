@@ -1,5 +1,7 @@
 #include "player.h"
 
+// TODO: make max items 4, fill with null when no item
+
 void initPlayer(void) {
     player.cast = LoadSound("resources/audio/sound_spell1.ogg");
     player.attack = LoadSound("resources/audio/sound_attack.ogg");

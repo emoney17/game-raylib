@@ -38,6 +38,13 @@ void updateButton(Button *button) {
     mousePoint = GetMousePosition();
     button->action = false;
 
+    // update button title positions
+    if (button->title != NULL) {
+        int textWidth = MeasureText(button->title, 12);
+        button->textX = ((float)button->texture.width - textWidth) / 2.0f + button->posX;
+        button->textY = button->posY + 10.0f;
+    }
+
     //clicking buttons
     if (CheckCollisionPointRec(mousePoint, button->bounds)) {
 
