@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <strings.h>
 
 #define MAX_ENEMY_COLLECTION 5
 
@@ -25,10 +26,10 @@ Enemy *createEnemy(const char *name, int hp, int damage, const char *texturePath
 void initEnemy(void)
 {
     enemyCollection[0] = *createEnemy("Goblin1", 10, 11, "resources/textures/enemy1.png", "resources/audio/sound_attack.ogg", "resources/audio/sound_death1.ogg");
-    enemyCollection[1] = *createEnemy("Goblin2", 10, 12, "resources/textures/enemy2.png", "resources/audio/sound_attack.ogg", "resources/audio/sound_death1.ogg");
-    enemyCollection[2] = *createEnemy("Goblin3", 10, 13, "resources/textures/enemy3.png", "resources/audio/sound_attack.ogg", "resources/audio/sound_death1.ogg");
-    enemyCollection[3] = *createEnemy("Goblin4", 10, 14, "resources/textures/enemy4.png", "resources/audio/sound_attack.ogg", "resources/audio/sound_death1.ogg");
-    enemyCollection[4] = *createEnemy("Goblin5", 10, 15, "resources/textures/enemy5.png", "resources/audio/sound_attack.ogg", "resources/audio/sound_death1.ogg");
+    enemyCollection[1] = *createEnemy("Goblin2", 20, 12, "resources/textures/enemy2.png", "resources/audio/sound_attack.ogg", "resources/audio/sound_death1.ogg");
+    enemyCollection[2] = *createEnemy("Goblin3", 25, 13, "resources/textures/enemy3.png", "resources/audio/sound_attack.ogg", "resources/audio/sound_death1.ogg");
+    enemyCollection[3] = *createEnemy("Goblin4", 20, 14, "resources/textures/enemy4.png", "resources/audio/sound_attack.ogg", "resources/audio/sound_death1.ogg");
+    enemyCollection[4] = *createEnemy("Goblin5", 15, 15, "resources/textures/enemy5.png", "resources/audio/sound_attack.ogg", "resources/audio/sound_death1.ogg");
     // Start at first enemy
     enemy = enemyCollection[0];
 }
@@ -37,8 +38,9 @@ void updateEnemy(void)
 {
     SetSoundVolume(enemy.defeat, volume);
 
+    // TODO: Pause for some time before attacking/playing sound/dropping item/etc
     // Defeat enemy
-    if (enemy.hp == 0) {
+    if (enemy.hp <= 0) {
         PlaySound(enemy.defeat);
         int rEnemy = rand() % MAX_ENEMY_COLLECTION;
         // printf("ENEMY: %s was killed, spawned in new enemy %s\n", enemy.name, enemyCollection[r].name);
@@ -46,6 +48,25 @@ void updateEnemy(void)
 
         int rItem = 1 + (rand() % (MAX_ITEMS_COLLECTION - 1)); // Ignore first item in collection
         printf("%s dropped\n", itemCollection[rItem].name);
+
+        // Check if open inventory slots and give item
+        bool check;
+        for (int i = 0; i < MAX_ITEMS; i++) {
+            check = false;
+            if (player.items[i].damage == -1) { // check if the item is the default item
+                printf("There is an open slot, adding item\n");
+                player.items[i] = itemCollection[rItem];
+                check = true;
+                break;
+            }
+            else {
+                printf("Slot %d is not open\n", i);
+            }
+        }
+
+        if (!check) {
+            printf("There are no slots open, you will not gain the item\n");
+        }
     }
     
     // Enemy turn
@@ -65,7 +86,7 @@ void drawEnemy(void)
 void unloadEnemy(void)
 {
     for (int i = 0; i < MAX_ENEMY_COLLECTION; i++) {
-        printf("UNLOADING ENEMY %s\n", enemyCollection[i].name);
+        printf("Unloading and freeing enemy %s\n", enemyCollection[i].name);
         UnloadTexture(enemyCollection[i].texture);
         UnloadSound(enemyCollection[i].attack);
     }

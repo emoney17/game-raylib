@@ -17,7 +17,8 @@ bool exitFlag = false;
 int screenWidth = 800;
 int screenHeight = 450;
 
-int main(void) {
+int main(void)
+{
     srand(time(NULL));
 
     InitWindow(screenWidth, screenHeight, "Pokemon Game");

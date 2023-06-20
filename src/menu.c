@@ -68,18 +68,46 @@ void updateMenuScreen()
     SetMusicVolume(menuMusic, volume);
     UpdateMusicStream(menuMusic);
 
-    // TODO: int update player, if an item has 0 uses remove it from the array
     updatePlayer();
     updateEnemy();
 
+    // ITEM BUTTONS
     if (itemsMode) {
         for (int i = 0; i < NUM_OF_BUTTONS; i ++) {
             updateButton(itemsScreenButtons[i]);
 
+            // If the item is the default item, show no item on the button
+            if (player.items[i].damage == -1) {
+                itemsScreenButtons[i]->title = NULL;
+            }
+            // else show the button title as the item name
+            else {
+                itemsScreenButtons[i]->title = player.items[i].name;
+            }
+            
+            // If there is no item on the button
             if (itemsScreenButtons[i]->title == NULL) {
                 if (itemsScreenButtons[i]->action) {
                     PlaySound(failedPress);
                     printf("This item button as no item\n");
+                }
+            }
+            // If there is an item on the button
+            else {
+                if (itemsScreenButtons[i]->action) {
+
+                    // TODO: test if its beter to make items take action points or not
+                    PlaySound(player.items[i].sound);
+                    enemy.hp -= player.items[i].damage;
+                    printf("Player used %s, dealt %d damage\n", player.items[i].name, player.items[i].damage);
+                    printf("Enemy hp %d\n", enemy.hp);
+                    player.items[i].uses -= 1;
+                    printf("Item has %d uses\n", player.items[i].uses);
+
+                    // If the uses are now 0, reset item to default item
+                    if (player.items[i].uses == 0) {
+                        player.items[i] = itemCollection[0];
+                    }
                 }
             }
         }
@@ -92,8 +120,8 @@ void updateMenuScreen()
             printf("leaving items menu\n");
             itemsMode = false;
         }
-
     }
+    // NORMAL BUTTONS
     else {
         updateButton(attackButton);
         updateButton(blockButton);

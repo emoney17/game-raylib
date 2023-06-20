@@ -11,7 +11,8 @@ static Button *settingsButton;
 static const char* buttonTexturePath = "resources/textures/button.png";
 static const char* buttonSoundPath = "resources/audio/sound_button.ogg";
 
-void initTitleScreen(void) {
+void initTitleScreen(void)
+{
     //initialize music here since its the first screen
     background = LoadTexture("resources/textures/menubg.png");
     titleMusic = LoadMusicStream("resources/audio/music_title.ogg");
@@ -21,7 +22,8 @@ void initTitleScreen(void) {
     settingsButton = createButton("Settings", buttonTexturePath, buttonSoundPath, 491, 350);
 }
 
-void updateTitleScreen(void) {
+void updateTitleScreen(void)
+{
     if (IsMusicStreamPlaying(menuMusic)) {
         StopMusicStream(menuMusic);
     }
@@ -63,7 +65,8 @@ void updateTitleScreen(void) {
     }
 }
 
-void drawTitleScreen(void) {
+void drawTitleScreen(void)
+{
     DrawTexture(background, 0, 0, WHITE);
 
     drawButton(startButton);
@@ -71,7 +74,8 @@ void drawTitleScreen(void) {
     drawButton(settingsButton);
 }
 
-void unloadTitleScreen(void) {
+void unloadTitleScreen(void)
+{
     UnloadTexture(background);
     //unload music stream here and not in others
     UnloadMusicStream(titleMusic);

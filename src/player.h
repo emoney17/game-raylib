@@ -1,3 +1,6 @@
+#ifndef PLAYER_H
+#define PLAYER_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <raylib.h>
@@ -30,3 +33,5 @@ Item *createItem(int damage, int uses, const char *name, const char* soundPath);
 void initPlayer(void);
 void updatePlayer(void);
 void unloadPlayer(void);
+
+#endif // PLAYER_H

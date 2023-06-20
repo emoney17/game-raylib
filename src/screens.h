@@ -1,9 +1,7 @@
-#ifndef SCREENS_H_
-#define SCREENS_H_
+#ifndef SCREENS_H
+#define SCREENS_H
 
 #include <raylib.h>
-
-//TODO: configure the 3 music streams to work on each screen
 
 typedef enum { TITLE, SETTINGS, MENU, BATTLE }Screen;
 
@@ -57,4 +55,4 @@ void updateMenuScreen(void);
 void drawMenuScreen(void);
 void unloadMenuScreen(void);
 
-#endif // SCREENS_H_
+#endif // SCREENS_H

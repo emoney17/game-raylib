@@ -12,7 +12,8 @@ static Button *quitButton;
 static const char* buttonTexturePath = "resources/textures/button.png";
 static const char* buttonSoundPath = "resources/audio/sound_button.ogg";
 
-void initSettingsScreen() {
+void initSettingsScreen()
+{
     background = LoadTexture("resources/textures/menubg.png");
 
     volumeUpButton = createButton("Up", buttonTexturePath, buttonSoundPath, 100, 100);
@@ -21,7 +22,8 @@ void initSettingsScreen() {
     quitButton = createButton("Quit", buttonTexturePath, buttonSoundPath, 100, 400);
 }
 
-void updateSettingsScreen() {
+void updateSettingsScreen()
+{
     if (IsMusicStreamPlaying(titleMusic)) {
         SetMusicVolume(titleMusic, volume);
         UpdateMusicStream(titleMusic); 
@@ -66,7 +68,8 @@ void updateSettingsScreen() {
     }
 }
 
-void drawSettingsScreen() {
+void drawSettingsScreen()
+{
     DrawTexture(background, 0, 0, WHITE);
 
     drawButton(volumeUpButton);
@@ -75,7 +78,8 @@ void drawSettingsScreen() {
     drawButton(quitButton);
 }
 
-void unloadSettingsScreen() {
+void unloadSettingsScreen()
+{
     UnloadTexture(background);
 
     unloadButton(volumeUpButton);

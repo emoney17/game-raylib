@@ -1,3 +1,6 @@
+#ifndef ENEMY_H
+#define ENEMY_H
+
 #include <stdio.h>
 #include <raylib.h>
 #include <stdlib.h>
@@ -24,3 +27,5 @@ void initEnemy(void);
 void updateEnemy(void);
 void drawEnemy(void);
 void unloadEnemy(void);
+
+#endif // ENEMY_H
