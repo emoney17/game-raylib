@@ -25,7 +25,6 @@ int main(void) {
 
     initPlayer();
     initEnemy();
-    initItems();
     initTitleScreen();
     initSettingsScreen();
     initMenuScreen();

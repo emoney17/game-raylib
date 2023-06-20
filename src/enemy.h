@@ -2,6 +2,8 @@
 #include <raylib.h>
 #include <stdlib.h>
 
+#define MAX_ENEMY_COLLECTION 5
+
 typedef struct {
     Texture2D texture;
     const char *name;
@@ -14,9 +16,8 @@ typedef struct {
 }Enemy;
 
 extern Enemy enemy;
-extern int enemiesSize;
 
-static Enemy *enemies;
+static Enemy enemyCollection[MAX_ENEMY_COLLECTION];
 
 Enemy *createEnemy(const char* name, int hp, int damage, const char* texturePath, const char* attackSoundPath, const char* defeatSoundPath);
 void initEnemy(void);

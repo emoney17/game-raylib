@@ -1,13 +1,14 @@
 #include <raylib.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "screens.h"
 #include "button.h"
 #include "player.h"
 #include "enemy.h"
 
-#define itemScreenNumberOfButtons 4
+#define NUM_OF_BUTTONS 4
 
 static Texture2D background;
 static Button *attackButton;
@@ -19,14 +20,13 @@ static Button *backButton;
 static Sound failedPress;
 
 static bool itemsMode = false; // mode to only show the items buttons
-static Button *itemsScreenButtons[itemScreenNumberOfButtons];
+static Button *itemsScreenButtons[NUM_OF_BUTTONS];
 
 static const char* buttonTexturePath = "resources/textures/button.png";
 static const char* buttonSoundPath = "resources/audio/sound_button.ogg";
 
-// TODO: Make inventory screen when open inventory
-
-void initMenuScreen() {
+void initMenuScreen()
+{
     failedPress = LoadSound("resources/audio/sound_fail.ogg");
 
     background = LoadTexture("resources/textures/menubg.png"); 
@@ -42,15 +42,17 @@ void initMenuScreen() {
 
     float x = 20;
     float y = 390;
-    // itemsScreenButtons = malloc(sizeof(Button) * 4);
-    for (int i = 0; i < itemScreenNumberOfButtons; i ++) {
+    // Create the base item buttons (4 at the bottom)
+    for (int i = 0; i < NUM_OF_BUTTONS; i ++) {
         itemsScreenButtons[i] = createButton(NULL, buttonTexturePath, buttonSoundPath, x, y);
         printf("Item button %d created coords x: %f y: %f", i, x, y);
         x += 200;
     }
 }
 
-void updateMenuScreen() {
+void updateMenuScreen()
+{
+    // Set the correct music
     if (IsMusicStreamPlaying(battleMusic)) {
         StopMusicStream(battleMusic);
     }
@@ -70,45 +72,21 @@ void updateMenuScreen() {
     updatePlayer();
     updateEnemy();
 
-    // update the names of the item buttons based on the items the player has
-    for (int i = 0; i < player.itemsSize - 1; i++) {
-        if (player.items[i].name != NULL) {
-            if (player.items[i].uses == 0) {
-                itemsScreenButtons[i]->title = NULL;
-            }
-            else {
-                itemsScreenButtons[i]->title = player.items[i].name;
-            }
-        }
-    }
-    
     if (itemsMode) {
-        // update all buttons
-        for (int i = 0; i < itemScreenNumberOfButtons; i ++) {
+        for (int i = 0; i < NUM_OF_BUTTONS; i ++) {
             updateButton(itemsScreenButtons[i]);
-        }
 
-        // if there is no item associated to the button play error sound
-        for (int i = 0; i < itemScreenNumberOfButtons; i++) {
-            if(itemsScreenButtons[i]->action) {
-                if (itemsScreenButtons[i]->title == NULL) {
+            if (itemsScreenButtons[i]->title == NULL) {
+                if (itemsScreenButtons[i]->action) {
                     PlaySound(failedPress);
-                    printf("You do not have an item\n");
-                }
-                else {
-                    PlaySound(player.items[i].sound);
-                    printf("using item %s\n", player.items[i].name);
-
-                    // update hp and actions 
-                    enemy.hp -= player.items[i].damage;
-                    player.action -= 1;
-                    player.items[i].uses -= 1;
+                    printf("This item button as no item\n");
                 }
             }
         }
-
-        //update back button to leave items mode
+        
+        // update back button to leave items mode
         updateButton(backButton);
+
         if (backButton->action) {
             PlaySound(backButton->sound); 
             printf("leaving items menu\n");
@@ -133,13 +111,6 @@ void updateMenuScreen() {
             // TODO: Make this the show stats button later
             if (blockButton->action) {
                 PlaySound(blockButton->sound);
-                printf("PLAYER: Blocking\n");
-                printf("HEALTH: %d\nACTIONS: %d\n", player.hp, player.action);
-                printf("ITEMS: \n");
-                for (int i = 0; i < player.itemsSize - 1; i++) {
-                    printf("%d %s\n", i, player.items[i].name);
-                }
-                // player.action -=1;
             }
             
             if (healthPotButton->action) {
@@ -161,7 +132,6 @@ void updateMenuScreen() {
                 printf("PLAYER: Items screen\n");
                 itemsMode = true;
             }
-            
         }
         else {
             if (attackButton->action) {
@@ -186,7 +156,9 @@ void updateMenuScreen() {
         }
     }
 
+    // update settings
     updateButton(settingsButton);
+
     if (settingsButton->action) {
         PlaySound(settingsButton->sound);
         printf("NOTICE: Settings button\n");
@@ -196,13 +168,17 @@ void updateMenuScreen() {
     }
 }
 
-void drawMenuScreen() {
+void drawMenuScreen()
+{
     DrawTexture(background, 0, 0, WHITE);
 
     drawEnemy();
 
+    // always draw settings button
+    drawButton(settingsButton);
+
     if (itemsMode) {
-        for (int i = 0; i < itemScreenNumberOfButtons; i ++) {
+        for (int i = 0; i < NUM_OF_BUTTONS; i ++) {
             drawButton(itemsScreenButtons[i]);
         }
 
@@ -215,12 +191,10 @@ void drawMenuScreen() {
         drawButton(healthPotButton);
         drawButton(itemsButton);
     }
-
-    // always draw settings button
-    drawButton(settingsButton);
 }
 
-void unloadMenuScreen() {
+void unloadMenuScreen()
+{
     UnloadTexture(background);
 
     unloadButton(attackButton);
@@ -230,7 +204,8 @@ void unloadMenuScreen() {
     unloadButton(settingsButton);
     unloadButton(backButton);
 
-    for (int i = 0; i < itemScreenNumberOfButtons; i ++) {
+    // unload all buttons for item mode
+    for (int i = 0; i < NUM_OF_BUTTONS; i ++) {
         unloadButton(itemsScreenButtons[i]);
     }
 

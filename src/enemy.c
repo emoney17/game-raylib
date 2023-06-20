@@ -5,9 +5,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int enemiesSize = 5;
+#define MAX_ENEMY_COLLECTION 5
 
-Enemy *createEnemy(const char *name, int hp, int damage, const char *texturePath, const char *attackSoundPath, const char* deathSoundPath) {
+Enemy *createEnemy(const char *name, int hp, int damage, const char *texturePath, const char *attackSoundPath, const char* deathSoundPath)
+{
     Enemy *enemy = malloc(sizeof(Enemy));
     enemy->name = name;
     enemy->texture = LoadTexture(texturePath);
@@ -21,52 +22,51 @@ Enemy *createEnemy(const char *name, int hp, int damage, const char *texturePath
     return enemy;
 }
 
-void initEnemy(void) {
-    enemies = malloc(sizeof(Enemy) * enemiesSize);
-    enemies[0] = *createEnemy("Goblin1", 10, 11, "resources/textures/enemy1.png", "resources/audio/sound_attack.ogg", "resources/audio/sound_death1.ogg");
-    enemies[1] = *createEnemy("Goblin2", 10, 12, "resources/textures/enemy2.png", "resources/audio/sound_attack.ogg", "resources/audio/sound_death1.ogg");
-    enemies[2] = *createEnemy("Goblin3", 10, 13, "resources/textures/enemy3.png", "resources/audio/sound_attack.ogg", "resources/audio/sound_death1.ogg");
-    enemies[3] = *createEnemy("Goblin4", 10, 14, "resources/textures/enemy4.png", "resources/audio/sound_attack.ogg", "resources/audio/sound_death1.ogg");
-    enemies[4] = *createEnemy("Goblin5", 10, 15, "resources/textures/enemy5.png", "resources/audio/sound_attack.ogg", "resources/audio/sound_death1.ogg");
-    enemy = enemies[0];
+void initEnemy(void)
+{
+    enemyCollection[0] = *createEnemy("Goblin1", 10, 11, "resources/textures/enemy1.png", "resources/audio/sound_attack.ogg", "resources/audio/sound_death1.ogg");
+    enemyCollection[1] = *createEnemy("Goblin2", 10, 12, "resources/textures/enemy2.png", "resources/audio/sound_attack.ogg", "resources/audio/sound_death1.ogg");
+    enemyCollection[2] = *createEnemy("Goblin3", 10, 13, "resources/textures/enemy3.png", "resources/audio/sound_attack.ogg", "resources/audio/sound_death1.ogg");
+    enemyCollection[3] = *createEnemy("Goblin4", 10, 14, "resources/textures/enemy4.png", "resources/audio/sound_attack.ogg", "resources/audio/sound_death1.ogg");
+    enemyCollection[4] = *createEnemy("Goblin5", 10, 15, "resources/textures/enemy5.png", "resources/audio/sound_attack.ogg", "resources/audio/sound_death1.ogg");
+    // Start at first enemy
+    enemy = enemyCollection[0];
 }
 
-void updateEnemy(void) {
+void updateEnemy(void)
+{
     SetSoundVolume(enemy.defeat, volume);
+
+    // Defeat enemy
     if (enemy.hp == 0) {
         PlaySound(enemy.defeat);
-        int r = rand() % enemiesSize;
-        printf("ENEMY: %s was killed, spawned in new enemy %s\n", enemy.name, enemies[r].name);
-        int i = rand() % itemCollectionSize;
-        printf("ENEMY: Dropped an item: %s\n", itemCollection[i].name);
-        player.items[player.itemsSize - 1] = itemCollection[i];
-        enemy = enemies[r];
-        player.itemsSize += 1;
-        player.items = realloc(player.items, sizeof(Item) * player.itemsSize);
-    }
+        int rEnemy = rand() % MAX_ENEMY_COLLECTION;
+        // printf("ENEMY: %s was killed, spawned in new enemy %s\n", enemy.name, enemyCollection[r].name);
+        enemy = enemyCollection[rEnemy];
 
+        int rItem = 1 + (rand() % (MAX_ITEMS_COLLECTION - 1)); // Ignore first item in collection
+        printf("%s dropped\n", itemCollection[rItem].name);
+    }
+    
+    // Enemy turn
     if (!player.turn) {
         PlaySound(player.attack);
         player.hp -= enemy.damage;
-        printf("ENEMY: %s has attacked and dealt %d damage\n", enemy.name, enemy.damage);
+        // printf("ENEMY: %s has attacked and dealt %d damage\n", enemy.name, enemy.damage);
         player.turn = true;
     }
 }
 
-void drawEnemy(void) {
+void drawEnemy(void)
+{
     DrawTexture(enemy.texture, enemy.posX, enemy.posY, WHITE);
 }
 
-void unloadEnemy(void) {
-    UnloadTexture(enemy.texture);
-    UnloadSound(enemy.attack);
-
-    if (enemies != NULL) {
-        free(enemies);
-        enemies = NULL;
-        printf("ENEMY: Freed\n");
-    }
-    else {
-        printf("ERROR: Could not free enemy\n");
+void unloadEnemy(void)
+{
+    for (int i = 0; i < MAX_ENEMY_COLLECTION; i++) {
+        printf("UNLOADING ENEMY %s\n", enemyCollection[i].name);
+        UnloadTexture(enemyCollection[i].texture);
+        UnloadSound(enemyCollection[i].attack);
     }
 }
