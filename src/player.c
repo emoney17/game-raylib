@@ -1,6 +1,9 @@
-#include "player.h"
 #include <raylib.h>
 #include <stdio.h>
+#include <string.h>
+
+#include "player.h"
+#include "enemy.h"
 
 Item itemCollection[MAX_ITEMS_COLLECTION];
 
@@ -14,13 +17,42 @@ Item *createItem(int damage, int uses, const char *name, const char* soundPath)
     return item;
 }
 
+// Function for using special and normal items
+void useItem(Item *item)
+{
+    if (strcmp(item->name, "Restore") == 0) {
+        // PlaySound(item->sound);
+        player.action += 1;
+        printf("You restored an action point total: %d\n", player.action);
+        item->uses -= 1;
+        printf("Remaining uses uses: %d\n", item->uses);
+    }
+    else if (strcmp(item->name, "Greater Heal") == 0) {
+        // PlaySound(item->sound);
+        player.hp += 30;
+        printf("You restored 30 health current %d\n", player.hp);
+        item->uses -= 1;
+        printf("Remaining uses uses: %d\n", item->uses);
+    }
+    else {
+        printf("Normal weapon, attacking enemy\n");
+        enemy.hp -= item->damage;
+        printf("Enemy hp %d\n", enemy.hp);
+        item->uses -= 1;
+        printf("Remaining uses: %d\n", item->uses);
+    }
+
+}
+
 void initPlayer(void)
 {
     // Create the item collection
-    itemCollection[0] = *createItem(-1, 1, "NONE", "resources/audio/sound_attack.ogg");
-    itemCollection[1] = *createItem(15, 1, "Claymore", "resources/audio/sound_attack.ogg");
-    itemCollection[2] = *createItem(10, 1, "Dagger", "resources/audio/sound_attack.ogg");
+    itemCollection[0] = *createItem(-1, 1, "NONE", "resources/audio/sound_attack1.ogg");
+    itemCollection[1] = *createItem(15, 1, "Claymore", "resources/audio/sound_attack1.ogg");
+    itemCollection[2] = *createItem(10, 1, "Dagger", "resources/audio/sound_attack3.ogg");
     itemCollection[3] = *createItem(20, 1, "Fireball", "resources/audio/sound_fire.ogg");
+    itemCollection[4] = *createItem(0, 2, "Restore", "resources/audio/sound_spell2.ogg");
+    itemCollection[5] = *createItem(0, 1, "Greater Heal", "resources/audio/sound_spell2.ogg");
 
     // Check if all items are created
     for (int i = 0; i < MAX_ITEMS_COLLECTION; i++) {
@@ -28,8 +60,8 @@ void initPlayer(void)
     }
 
     // Create the player
-    player.cast = LoadSound("resources/audio/sound_spell1.ogg");
-    player.attack = LoadSound("resources/audio/sound_attack.ogg");
+    player.cast = LoadSound("resources/audio/sound_spell.ogg");
+    player.attack = LoadSound("resources/audio/sound_attack2.ogg");
     player.hp = 80;
     player.healthPots = 1;
     player.actionsPots = 1;

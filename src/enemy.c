@@ -1,10 +1,10 @@
-#include "enemy.h"
-#include "screens.h"
-#include "player.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <strings.h>
+
+#include "enemy.h"
+#include "screens.h"
+#include "player.h"
 
 #define MAX_ENEMY_COLLECTION 5
 
@@ -25,11 +25,11 @@ Enemy *createEnemy(const char *name, int hp, int damage, const char *texturePath
 
 void initEnemy(void)
 {
-    enemyCollection[0] = *createEnemy("Goblin1", 10, 11, "resources/textures/enemy1.png", "resources/audio/sound_attack.ogg", "resources/audio/sound_death1.ogg");
-    enemyCollection[1] = *createEnemy("Goblin2", 20, 12, "resources/textures/enemy2.png", "resources/audio/sound_attack.ogg", "resources/audio/sound_death1.ogg");
-    enemyCollection[2] = *createEnemy("Goblin3", 25, 13, "resources/textures/enemy3.png", "resources/audio/sound_attack.ogg", "resources/audio/sound_death1.ogg");
-    enemyCollection[3] = *createEnemy("Goblin4", 20, 14, "resources/textures/enemy4.png", "resources/audio/sound_attack.ogg", "resources/audio/sound_death1.ogg");
-    enemyCollection[4] = *createEnemy("Goblin5", 15, 15, "resources/textures/enemy5.png", "resources/audio/sound_attack.ogg", "resources/audio/sound_death1.ogg");
+    enemyCollection[0] = *createEnemy("Goblin1", 10, 11, "resources/textures/enemy1.png", "resources/audio/sound_attack1.ogg", "resources/audio/sound_enemy1.ogg");
+    enemyCollection[1] = *createEnemy("Goblin2", 10, 12, "resources/textures/enemy2.png", "resources/audio/sound_attack2.ogg", "resources/audio/sound_enemy2.ogg");
+    enemyCollection[2] = *createEnemy("Goblin3", 10, 13, "resources/textures/enemy3.png", "resources/audio/sound_attack3.ogg", "resources/audio/sound_enemy3.ogg");
+    enemyCollection[3] = *createEnemy("Goblin4", 10, 14, "resources/textures/enemy4.png", "resources/audio/sound_attack1.ogg", "resources/audio/sound_enemy4.ogg");
+    enemyCollection[4] = *createEnemy("Goblin5", 10, 15, "resources/textures/enemy5.png", "resources/audio/sound_attack2.ogg", "resources/audio/sound_enemy5.ogg");
     // Start at first enemy
     enemy = enemyCollection[0];
 }
@@ -39,6 +39,7 @@ void updateEnemy(void)
     SetSoundVolume(enemy.defeat, volume);
 
     // TODO: Pause for some time before attacking/playing sound/dropping item/etc
+
     // Defeat enemy
     if (enemy.hp <= 0) {
         PlaySound(enemy.defeat);

@@ -73,9 +73,12 @@ void updateMenuScreen()
 
     // ITEM BUTTONS
     if (itemsMode) {
-        for (int i = 0; i < NUM_OF_BUTTONS; i ++) {
+        // updating seperatly to prevent graphical error on button titles
+        for (int i = 0; i < NUM_OF_BUTTONS; i++) {
             updateButton(itemsScreenButtons[i]);
+        }
 
+        for (int i = 0; i < NUM_OF_BUTTONS; i++) {
             // If the item is the default item, show no item on the button
             if (player.items[i].damage == -1) {
                 itemsScreenButtons[i]->title = NULL;
@@ -98,11 +101,7 @@ void updateMenuScreen()
 
                     // TODO: test if its beter to make items take action points or not
                     PlaySound(player.items[i].sound);
-                    enemy.hp -= player.items[i].damage;
-                    printf("Player used %s, dealt %d damage\n", player.items[i].name, player.items[i].damage);
-                    printf("Enemy hp %d\n", enemy.hp);
-                    player.items[i].uses -= 1;
-                    printf("Item has %d uses\n", player.items[i].uses);
+                    useItem(&player.items[i]);
 
                     // If the uses are now 0, reset item to default item
                     if (player.items[i].uses == 0) {

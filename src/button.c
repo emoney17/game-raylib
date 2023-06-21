@@ -25,12 +25,12 @@ Button *createButton(const char* title, const char* texturePath, const char *sou
     button->bounds.width = (float)button->texture.width;
     button->bounds.height = (float)button->texture.height / 2;
 
-    // Moved to update
-    // if (button->title != NULL) {
-    //     int textWidth = MeasureText(button->title, 12);
-    //     button->textX = ((float)button->texture.width - textWidth) / 2.0f + button->posX;
-    //     button->textY = button->posY + 10.0f;
-    // }
+    // Commenting this cause graphical errors, upate text initially and every frame
+    if (button->title != NULL) {
+        int textWidth = MeasureText(button->title, 12);
+        button->textX = ((float)button->texture.width - textWidth) / 2.0f + button->posX;
+        button->textY = button->posY + 10.0f;
+    }
 
     return button;
 }
