@@ -18,6 +18,7 @@ typedef struct {
 typedef struct {
     int hp;
     int action;
+    int block;
     Sound cast;
     Sound attack;
     int healthPots;

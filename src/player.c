@@ -63,6 +63,7 @@ void initPlayer(void)
     player.cast = LoadSound("resources/audio/sound_spell.ogg");
     player.attack = LoadSound("resources/audio/sound_attack2.ogg");
     player.hp = 80;
+    player.block = 0;
     player.healthPots = 1;
     player.actionsPots = 1;
     player.action = 3;

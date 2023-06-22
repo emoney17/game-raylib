@@ -73,8 +73,17 @@ void updateEnemy(void)
     // Enemy turn
     if (!player.turn) {
         PlaySound(player.attack);
-        player.hp -= enemy.damage;
-        // printf("ENEMY: %s has attacked and dealt %d damage\n", enemy.name, enemy.damage);
+        printf("ENEMY: Attacked (%d + %d) - %d\n", player.hp, player.block, enemy.damage);
+        if (enemy.damage - player.block > 0) {
+            player.hp -= enemy.damage - player.block;
+        }
+        else {
+            printf("You fully blocked the attack\n");
+        }
+        printf("PLAYER: Current hp %d\n", player.hp);
+        printf("NOTICE: resetting block points\n");
+        player.block = 0;
+
         player.turn = true;
     }
 }

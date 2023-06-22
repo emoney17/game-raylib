@@ -71,39 +71,31 @@ void updateMenuScreen()
     updatePlayer();
     updateEnemy();
 
-    // ITEM BUTTONS
+    // Item buttons
     if (itemsMode) {
-        // updating seperatly to prevent graphical error on button titles
         for (int i = 0; i < NUM_OF_BUTTONS; i++) {
             updateButton(itemsScreenButtons[i]);
         }
 
         for (int i = 0; i < NUM_OF_BUTTONS; i++) {
-            // If the item is the default item, show no item on the button
             if (player.items[i].damage == -1) {
                 itemsScreenButtons[i]->title = NULL;
             }
-            // else show the button title as the item name
             else {
                 itemsScreenButtons[i]->title = player.items[i].name;
             }
             
-            // If there is no item on the button
             if (itemsScreenButtons[i]->title == NULL) {
                 if (itemsScreenButtons[i]->action) {
                     PlaySound(failedPress);
                     printf("This item button as no item\n");
                 }
             }
-            // If there is an item on the button
             else {
                 if (itemsScreenButtons[i]->action) {
-
-                    // TODO: test if its beter to make items take action points or not
                     PlaySound(player.items[i].sound);
                     useItem(&player.items[i]);
 
-                    // If the uses are now 0, reset item to default item
                     if (player.items[i].uses == 0) {
                         player.items[i] = itemCollection[0];
                     }
@@ -120,7 +112,7 @@ void updateMenuScreen()
             itemsMode = false;
         }
     }
-    // NORMAL BUTTONS
+    // Normal buttons
     else {
         updateButton(attackButton);
         updateButton(blockButton);
@@ -135,9 +127,12 @@ void updateMenuScreen()
                 printf("PLAYER: 5 damaged dealt to enemy\n");
             }
             
-            // TODO: Make this the show stats button later
             if (blockButton->action) {
                 PlaySound(blockButton->sound);
+                player.block += 5;
+                player.action -= 1;
+                printf("PLAYER: Blocking, 5 added to hp for this turn\n");
+                printf("Total block: %d\n", player.block);
             }
             
             if (healthPotButton->action) {
